@@ -45,3 +45,18 @@ FROM Sales S, Time T, Customer C
 WHERE S.CustomerID = C.CustomerID
     AND S.TimeID = T.TimeID
 GROUP BY Province, Region, Month;
+
+
+-- Query #4
+SELECT Region, Month,
+    SUM(TotAmount),
+    -- 2 aggregation functions:
+    -- 1st computed on group by
+    -- 2nd computed on partition
+    SUM(SUM(TotAmount)) OVER (PARTITION BY Region
+                            ORDER BY Month
+                            ROW UNBOUNDED PRECEDING)
+FROM Sales S, Customer C, Time T
+WHERE S.CustomerID = C.CustomerID
+        AND S.TimeID = T.TimeID
+GROUP BY Region, Month;
