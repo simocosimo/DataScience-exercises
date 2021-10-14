@@ -20,3 +20,16 @@ GROUP BY CategoryName, CategoryID
 ORDER BY Rank_SoldItems
 -- I can only use, in the select, attributes that are not present in the group by. I can 
 -- only do that by using aggregation functions (SUM, AVG, RANK, etc...)
+
+
+-- Query #2
+SELECT Province, Region,
+    SUM(TotAmount),
+    -- The partition attribute NEEDS to be in the GROUP BY clause
+    RANK() OVER (PARTITION BY Region
+                    ORDER BY SUM(TotAmount) DESC)
+FROM Sales S, Customer C
+WHERE S.CustomerID = C.CustomerID
+-- filter conditions should go here (none in this example)
+GROUP BY Province, Region   
+-- I need the Region clause, otherwise I can't put it in the select
