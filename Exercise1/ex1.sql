@@ -33,3 +33,15 @@ WHERE S.CustomerID = C.CustomerID
 -- filter conditions should go here (none in this example)
 GROUP BY Province, Region;
 -- I need the Region clause, otherwise I can't put it in the select
+
+
+-- Query #3
+SELECT Province, Region, Month,
+    SUM(TotAmount),
+    RANK() OVER (PARTITION BY Month
+                    ORDER BY SUM(TotAmount) DESC)
+FROM Sales S, Time T, Customer C
+-- in this case, multiple tables to join
+WHERE S.CustomerID = C.CustomerID
+    AND S.TimeID = T.TimeID
+GROUP BY Province, Region, Month;
