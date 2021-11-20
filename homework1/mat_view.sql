@@ -63,3 +63,23 @@ CREATE MATERIALIZED VIEW LOG ON TIMEDIM
 WITH SEQUENCE, ROWID
 (TIME_ID, DATEMONTH, DATEYEAR)
 INCLUDING NEW VALUES;
+
+--mat view by schema
+CREATE TABLE VM1 (
+    TicketType VARCHAR(20),
+    DateMonth VARCHAR(20),
+    TotPrice INTEGER CHECK (TotPrice IS NOT NULL AND TotPrice > 0),
+    TotTickets INTEGER CHECK (TotTickets IS NOT NULL AND TotTickets > 0),
+    PRIMARY KEY (TicketType, DateMonth)
+);
+
+--filling query example
+INSERT INTO VM1 (TicketType, DateMonth, TotPrice, TotTickets) 
+VALUES (
+    SELECT S.TICKET_TYPE, T.DATEMONTH,
+        SUM(S.PRICE),
+        SUM(S.N_TICKET)
+    FROM SALES S, TIMEDIM T
+    WHERE S.TIME_ID = T.TIME_ID
+    GROUP BY S.TICKET_TYPE, T.DATEMONTH, T.DATEYEAR
+)
