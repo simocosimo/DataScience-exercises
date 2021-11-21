@@ -69,7 +69,7 @@ CREATE TABLE VM1 (
     DateYear INTEGER,
     TotPrice INTEGER CHECK (TotPrice IS NOT NULL AND TotPrice > 0),
     TotTickets INTEGER CHECK (TotTickets IS NOT NULL AND TotTickets > 0),
-    PRIMARY KEY (TicketType, DateMonth)
+    PRIMARY KEY (TicketType, DateMonth, DateYear)
 );
 
 --filling query example
