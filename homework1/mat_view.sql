@@ -73,7 +73,7 @@ CREATE TABLE VM1 (
 );
 
 --filling query example
-INSERT INTO VM1 (TicketType, DateMonth, TotPrice, TotTickets) 
+INSERT INTO VM1 (TicketType, DateMonth, DateYear, TotPrice, TotTickets) 
 (
     SELECT S.TICKET_TYPE, T.DATEMONTH, T.DATEYEAR
         SUM(S.PRICE),
